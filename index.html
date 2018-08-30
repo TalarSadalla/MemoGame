@@ -3,9 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="piece.css" media="screen"/>
 </head>
 <body>
 <h1>HELLO</h1>
+<div id="menu">
+  <span id="boxbuttons">
+    <span class="button">
+      <span id="counter">0</span>
+      Clicks
+    </span>
+    <span class="button">
+      <a onclick="controller.startGame()">Start</a>
+    </span>
+      <span class="button">
+      <a onclick="controller.addPiece()">Increase level</a>
+    </span>
+      <span class="button">
+      <a onclick="controller.higlightPiece()">Highlight</a>
+    </span>
+    <div id="boxcard"></div>
+  </span>
+</div>
+<div id="gameBoardDiv">
+    <span></span>
+</div>
 <script src="js/game.js"></script>
+<script src="js/controller.js"></script>
+<script src="js/view.js"></script>
 </body>
 </html>
