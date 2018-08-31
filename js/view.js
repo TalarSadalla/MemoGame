@@ -1,3 +1,4 @@
+'use strict';
 var view = (function () {
     var renderPieces = function (pieces) {
             clearWindow();
@@ -9,10 +10,9 @@ var view = (function () {
                     btn = document.createElement("BUTTON");  // Create a <button> element
                     btn.setAttribute("id", i);
                     btn.onclick = function () {
-                        controller.guess(parseInt(this.getAttribute("id")));
+                        controller.takeAShot(parseInt(this.getAttribute("id")));
                     };
-                    btn.classList.add("pieceButtonNew")
-                    btn.style.backgroundColor = "cornflowerblue";
+                    btn.classList.add("pieceButtonNew");
                     div = document.getElementById('gameBoardDiv');
                     div.appendChild(btn);
                 }
@@ -20,21 +20,21 @@ var view = (function () {
                     btn = document.createElement("BUTTON");  // Create a <button> element
                     btn.setAttribute("id", i);
                     btn.onclick = function () {
-                        controller.guess(parseInt(this.getAttribute("id")));
+                        controller.takeAShot(parseInt(this.getAttribute("id")));
                     };
-                    btn.classList.add("pieceButton")
-                    btn.style.backgroundColor = "lawngreen";
+                    btn.classList.add("pieceButton");
                     div = document.getElementById('gameBoardDiv');
                     div.appendChild(btn);
                 }
             }
-
             setTimeout(function () {
                 div = document.getElementById('gameBoardDiv').children;
                 for (i = 0; i < div.length; i++) {
-                    div[i].setAttribute("style", "background-color: lawngreen;");
+                    div[i].setAttribute("class", "pieceButton");
                 }
             }, 1000);
+
+            addStatistics();
         },
         highlightPiece = function () {
             controller.moveToNextLevel();
@@ -44,16 +44,59 @@ var view = (function () {
             controller.moveToNextLevel();
         },
 
+        changeState = function (id, resultOfGuess) {
+            var div = document.getElementById(id);
+            if (resultOfGuess === "CORRECT") {
+                div.setAttribute("class", "hitedPiece");
+            } else if (resultOfGuess === "NEXT LEVEL") {
+                div.setAttribute("class", "hitedPiece");
+            } else if (resultOfGuess === "DOUBLESHOT") {
+                div.setAttribute("class", "missedPiece");
+            } else if (resultOfGuess === "MISSED") {
+                div.setAttribute("class", "missedPiece");
+            } else if (resultOfGuess === "GAME OVER") {
+                div.setAttribute("class", "missedPiece");
+            }
+
+        },
+        lockButtons = function () {
+            const div = document.getElementById('gameBoardDiv');
+            div.classList.add("disable");
+        },
+        unlockButtons = function () {
+            const div = document.getElementById('gameBoardDiv');
+            div.classList.remove("disable");
+        },
         clearWindow = function () {
             const div = document.getElementById('gameBoardDiv');
             while (div.firstChild) {
                 div.removeChild(div.firstChild);
             }
+            div.classList.remove("disable");
+        },
+
+        addStatistics = function () {
+            var accuracy,
+                numberOfMistakes,
+                numberOfMoves,
+                piecesToGuess;
+            accuracy = controller.getAccuracy();
+            numberOfMistakes = controller.getNumberOfMistakes();
+            numberOfMoves = controller.getNumberOfMoves();
+            piecesToGuess = controller.getPiecesToGuess();
+            document.getElementById("accuracy").innerText = accuracy.toString();
+            document.getElementById("numberOfMistakes").innerText = numberOfMistakes.toString();
+            document.getElementById("numberOfMoves").innerText = numberOfMoves.toString();
+            document.getElementById("piecesToGuess").innerText = piecesToGuess.toString();
 
         };
     return {
         'renderPieces': renderPieces,
         'addPiece': addPiece,
-        'highlightPiece': highlightPiece
+        'highlightPiece': highlightPiece,
+        'changeState': changeState,
+        'addStatistics': addStatistics,
+        'lockButtons': lockButtons,
+        'unlockButtons': unlockButtons
     }
 })();

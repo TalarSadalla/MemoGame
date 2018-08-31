@@ -18,15 +18,12 @@ describe('Game', function () {
     });
 
     it('should start game with configured number of pieces', function () {
-        var pieces,
-            config = {
-                numberOfPieces: 6
-            };
-        game.startGame(config);
+        var pieces;
+        game.startGame();
 
         pieces = game.getPieces();
 
-        expect(pieces.length).toBe(6);
+        expect(pieces.length).toBe(4);
     });
 
     it('should return number of pieces to guess when initial number of pieces is 4', function () {
@@ -35,7 +32,7 @@ describe('Game', function () {
             config = {
                 numberOfPieces: 4
             };
-        game.startGame(config);
+        game.startGame();
 
         pieces = game.getPieces();
 
@@ -43,31 +40,25 @@ describe('Game', function () {
         expect(piecesToGuess.length).toBe(1);
     });
 
-    it('should return number of pieces to guess when initial number of pieces is 8', function () {
+    it('should return number of pieces to guess with initial number of pieces', function () {
         var pieces,
-            piecesToGuess,
-            config = {
-                numberOfPieces: 8
-            };
-        game.startGame(config);
+            piecesToGuess;
+        game.startGame();
 
         pieces = game.getPieces();
 
         piecesToGuess = findPiecesToGuess(pieces);
 
-        expect(piecesToGuess.length).toBe(3);
+        expect(piecesToGuess.length).toBe(1);
     });
 
     it('should return true if there are correct guesses', function () {
         var pieces,
             piecesToGuess,
             piecesGuessByPlayer,
-            foundElements,
-            config = {
-                numberOfPieces: 5
-            };
+            foundElements;
 
-        game.startGame(config);
+        game.startGame();
 
         pieces = game.getPieces();
 
@@ -78,71 +69,60 @@ describe('Game', function () {
             return element.toGuess === true;
         });
 
-        expect(game.playerGuess(pieces,foundElements)).toBe("Next level");
+        expect(game.playerGuess(foundElements)).toBe("NEXT LEVEL");
     });
 
     it('should return false if there are no correct guesses', function () {
         var i,
             pieces,
             piecesToGuess,
-            piecesGuessByPlayer,
-            config = {
-                numberOfPieces: 5
-            };
+            piecesGuessByPlayer;
 
-        game.startGame(config);
+
+        game.startGame();
         pieces = game.getPieces();
         piecesToGuess = findPiecesToGuess(pieces);
         piecesGuessByPlayer = pieces;
 
-        expect(game.playerGuess(pieces, piecesGuessByPlayer.findIndex(function (element) {
+        expect(game.playerGuess(piecesGuessByPlayer.findIndex(function (element) {
             return element.toGuess === false;
-        }))).toBe("Game Over");
+        }))).toBe("GAME OVER");
     });
 
     it('should return false if there is wrong shoot', function () {
         var i,
             pieces,
             piecesToGuess,
-            piecesGuessByPlayer,
-            config = {
-                numberOfPieces: 5
-            };
+            piecesGuessByPlayer;
 
-        game.startGame(config);
+        game.startGame();
         pieces = game.getPieces();
         piecesToGuess = findPiecesToGuess(pieces);
         piecesGuessByPlayer = -1;
 
-        expect(game.playerGuess(pieces, piecesGuessByPlayer)).toBe("Game Over");
+        expect(game.playerGuess(piecesGuessByPlayer)).toBe("GAME OVER");
     });
 
     it('should return false if there is shoot out of bound', function () {
         var i,
             pieces,
             piecesToGuess,
-            piecesGuessByPlayer,
-            config = {
-                numberOfPieces: 5
-            };
+            piecesGuessByPlayer;
 
-        game.startGame(config);
+        game.startGame();
         pieces = game.getPieces();
         piecesToGuess = findPiecesToGuess(pieces);
         piecesGuessByPlayer = 6;
 
-        expect(game.playerGuess(pieces, piecesGuessByPlayer)).toBe("Game Over");
+        expect(game.playerGuess(piecesGuessByPlayer)).toBe("GAME OVER");
     });
     it('should return noGuess available if there are 4 pieces', function () {
         var pieces,
             piecesToGuess,
             piecesGuessByPlayer,
-            foundElements,
-            config = {
-                numberOfPieces: 4
-            };
+            foundElements;
 
-        game.startGame(config);
+        game.startGame();
 
         pieces = game.getPieces();
 
@@ -153,7 +133,7 @@ describe('Game', function () {
             return element.toGuess === true;
         });
 
-        expect(game.playerGuess(pieces,foundElements)).toBe("Next level");
+        expect(game.playerGuess(foundElements)).toBe("NEXT LEVEL");
     });
 
 

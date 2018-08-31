@@ -1,34 +1,70 @@
+'use strict';
 var game = (function () {
 
         var initialNumberOfPieces = 4,
             currentNumberOfPieces = initialNumberOfPieces,
-            piecesToGuess;
-        var startGame = function () {
+            pieces = [],
+            initialNumberOfAllowedMistakes = 0,
+            allowedMistakes,
+            numberOfMistakes = 0,
+            numberOfMoves = 0,
+            numberOfShots = 0,
+            startGame = function () {
                 currentNumberOfPieces = initialNumberOfPieces;
+                initialNumberOfAllowedMistakes;
+                allowedMistakes = 0;
+                numberOfMistakes = 0;
+                pieces = initializePieces();
             },
 
             increaseLevel = function () {
                 currentNumberOfPieces++;
+                numberOfMistakes;
+                numberOfMoves;
+                pieces = initializePieces();
+                initialNumberOfAllowedMistakes;
             },
 
+            getNumberOfAllMoves = function () {
+                return numberOfMoves;
+            },
 
+            getNumberOfMistakes = function () {
+                return numberOfMistakes;
+            },
 
-            piecesToGuess = function findPiecesToGuess(pieces) {
+            getAccuracy = function () {
+                if (numberOfMoves === 0) {
+                    return 0;
+                }
+                return Math.round((numberOfShots / numberOfMoves) * 10000) / 100;
+            },
+
+            piecesToGuess = function findPiecesToGuess() {
                 return pieces.filter(function (piece) {
                     return piece.toGuess;
-                });
+                }).length;
             },
 
-            getPieces = function () {
+            getNumberOfPieces = function () {
+                return currentNumberOfPieces;
+            },
+
+            initializePieces = function () {
                 var i,
                     pieces = [];
                 for (i = 0; i < currentNumberOfPieces; i++) {
-                    pieces.push({});
-                    pieces[i].id = i;
-                    pieces[i].toGuess = false;
-                    pieces[i].isGuess = false;
+                    pieces.push({
+                        id: i,
+                        toGuess: false,
+                        isGuess: false
+                    });
                 }
                 pieces = numberOfPiecesToGuess(pieces);
+                return pieces;
+            },
+
+            getPieces = function () {
                 return pieces;
             },
 
@@ -46,32 +82,43 @@ var game = (function () {
                 return pieces;
             },
 
-            playerGuess = function (pieces, pieceGuessByPlayerId) {
-                if (checkGuess(pieces, pieceGuessByPlayerId)) {
-
-                    if (!anyGuessAvailable(pieces)) {
-                        console.log("Next");
-                        return "Next level";
+            playerGuess = function (pieceGuessByPlayerId) {
+                if(pieces[pieceGuessByPlayerId].isGuess){
+                    numberOfMoves = numberOfMoves + 1;
+                    numberOfMistakes = numberOfMistakes + 1;
+                    if (numberOfMistakes > allowedMistakes) {
+                        return "GAME OVER";
                     }
-                    console.log("Good");
+                }
+                if (checkGuess(pieceGuessByPlayerId)) {
+                    if (!anyGuessAvailable()) {
+                        numberOfShots = numberOfShots + 1;
+                        numberOfMoves = numberOfMoves + 1;
+                        return "NEXT LEVEL";
+                    }
+                    numberOfShots = numberOfShots + 1;
+                    numberOfMoves = numberOfMoves + 1;
+                    return "CORRECT";
                 }
                 else {
-                    return "Game Over";
-                    game.startGame({
-                        numberOfPieces: initialNumberOfPieces
-                    });
-                }
-            },
-            anyGuessAvailable = function (pieces) {
-                for (i = 0; i < pieces.length; i++) {
-                    if (pieces[i].toGuess === true && pieces[i].isGuess === false) {
-                        return true;
-                    } else {
-                        return false;
+                    numberOfMoves = numberOfMoves + 1;
+                    numberOfMistakes = numberOfMistakes + 1;
+                    if (numberOfMistakes > allowedMistakes) {
+                        return "GAME OVER";
                     }
                 }
             },
-            checkGuess = function (pieces, pieceGuessByPlayerId) {
+            anyGuessAvailable = function () {
+                var i,
+                    isGuessAvailable = false;
+                for (i = 0; i < pieces.length; i++) {
+                    if (pieces[i].toGuess === true && pieces[i].isGuess === false) {
+                        isGuessAvailable = true;
+                    }
+                }
+                return isGuessAvailable;
+            },
+            checkGuess = function (pieceGuessByPlayerId) {
                 var i,
                     isGuess = false
                 if (pieceGuessByPlayerId < 0 || pieceGuessByPlayerId > pieces.length) {
@@ -79,6 +126,7 @@ var game = (function () {
                 }
                 for (i = 0; i < pieces.length; i++) {
                     if (pieces[i].id === pieceGuessByPlayerId && pieces[i].toGuess) {
+                        pieces[i].isGuess = true;
                         isGuess = true;
                     } else if (pieces[i].id === pieceGuessByPlayerId && pieces[i].isGuess) {
                         isGuess = false;
@@ -90,9 +138,14 @@ var game = (function () {
         return {
             'startGame': startGame,
             'getPieces': getPieces,
+            'initializePieces': initializePieces,
             'playerGuess': playerGuess,
             'piecesToGuess': piecesToGuess,
-            'increaseLevel': increaseLevel
+            'increaseLevel': increaseLevel,
+            'getNumberOfPieces': getNumberOfPieces,
+            'getNumberOfAllMoves': getNumberOfAllMoves,
+            'getNumberOfMistakes': getNumberOfMistakes,
+            'getAccuracy': getAccuracy
         }
     }
 )

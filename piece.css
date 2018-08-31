@@ -55,7 +55,7 @@ body {
     width: 60px;
     height: 60px;
     display: inline-block;
-    background-color: lawngreen;
+    background-color: mediumorchid;
 }
 
 .pieceButtonNew {
@@ -66,9 +66,44 @@ body {
     background-color: cornflowerblue;
 }
 
-#gameBoardDiv {
+.gameBoardDiv {
     background-color: #EE872A;
     margin: 0 auto;
     display: inline-block;
 }
+
+.hitedPiece {
+     background-color: green;
+    margin: 15px;
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+ }
+
+.missedPiece {
+    background-color: red;
+    margin: 15px;
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+}
+
+.pieceButton:hover {
+    background-color: lightgray;
+    margin: 15px;
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+}
+
+.disable {
+    pointer-events: none;
+}
+
+#boxbuttons {
+    text-align: center;
+    margin: 20px;
+    display: inline-block;
+}
+
 
