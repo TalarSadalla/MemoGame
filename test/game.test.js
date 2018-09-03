@@ -213,7 +213,7 @@ describe('Game', function () {
         expect(game.getNumberOfAllMoves()).toBe(1);
     });
 
-    it('should return number of mistakes if there is wrong shoot', function () {
+    it('should return number of allowed mistakes if there is wrong shoot', function () {
         var i,
             pieces,
             piecesToGuess,
@@ -226,7 +226,7 @@ describe('Game', function () {
 
         game.playerGuess(piecesGuessByPlayer);
 
-        expect(game.getNumberOfMistakes()).toBe(1);
+        expect(game.getNumberOfMistakes()).toBe(0);
     });
 
     it('should return accuracy after move if there is correct shoot', function () {
