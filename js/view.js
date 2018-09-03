@@ -2,10 +2,15 @@
 var view = (function () {
     var renderPieces = function (pieces) {
             clearWindow();
+
             var btn,
                 i,
-                div;
+                div,
+                defaultHighlightTime = 1,
+                customHighlightTime = getHighlightTime();
+            lockButtons();
             for (i = 0; i < pieces.length; i++) {
+
                 if (pieces[i].toGuess) {
                     btn = document.createElement("BUTTON");  // Create a <button> element
                     btn.setAttribute("id", i);
@@ -27,17 +32,25 @@ var view = (function () {
                     div.appendChild(btn);
                 }
             }
+
+            if (defaultHighlightTime < customHighlightTime) {
+                defaultHighlightTime = customHighlightTime;
+            }
             setTimeout(function () {
                 div = document.getElementById('gameBoardDiv').children;
                 for (i = 0; i < div.length; i++) {
                     div[i].setAttribute("class", "pieceButton");
                 }
-            }, 1000);
+            }, defaultHighlightTime * 1000);
+            unlockButtons();
 
             addStatistics();
         },
         highlightPiece = function () {
             controller.moveToNextLevel();
+        },
+        getHighlightTime = function () {
+            return document.getElementById("highlightTimeId").value;
         },
 
         addPiece = function () {
@@ -50,10 +63,6 @@ var view = (function () {
                 div.setAttribute("class", "hitedPiece");
             } else if (resultOfGuess === "NEXT LEVEL") {
                 div.setAttribute("class", "hitedPiece");
-            } else if (resultOfGuess === "DOUBLESHOT") {
-                div.setAttribute("class", "missedPiece");
-            } else if (resultOfGuess === "MISSED") {
-                div.setAttribute("class", "missedPiece");
             } else if (resultOfGuess === "GAME OVER") {
                 div.setAttribute("class", "missedPiece");
             }
@@ -97,6 +106,7 @@ var view = (function () {
         'changeState': changeState,
         'addStatistics': addStatistics,
         'lockButtons': lockButtons,
-        'unlockButtons': unlockButtons
+        'unlockButtons': unlockButtons,
+        'getHighlightTime': getHighlightTime
     }
 })();

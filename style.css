@@ -11,11 +11,11 @@ body {
     margin: 0;
     width: 640px;
 }
-#boxcard {
+#menuDiv {
     z-index: 1;
     margin: 10px 0 0;
 }
-#boxcard div{
+#menuDiv div{
     float: left;
     width: 100px;
     height: 100px;
@@ -28,17 +28,17 @@ body {
     background: #B1B1B1;
     z-index: 2;
 }
-#boxcard div img {
+#menuDiv div img {
     display: none;
     border-radius: 10px;
     z-index: 3;
 }
-#boxbuttons {
+#menuButtons {
     text-align: center;
     margin: 20px;
     display: block;
 }
-#boxbuttons .button {
+#menuButtons .button {
     text-transform: uppercase;
     background: coral;
     padding: 5px 10px;
@@ -46,7 +46,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
 }
-#boxbuttons .button:hover {
+#menuButtons .button:hover {
     background: #999;
 }
 
@@ -55,6 +55,7 @@ body {
     width: 60px;
     height: 60px;
     display: inline-block;
+    border-radius: 10px;
     background-color: mediumorchid;
 }
 
@@ -63,6 +64,7 @@ body {
     width: 60px;
     height: 60px;
     display: inline-block;
+    border-radius: 10px;
     background-color: cornflowerblue;
 }
 
@@ -73,11 +75,12 @@ body {
 }
 
 .hitedPiece {
-     background-color: green;
+    background-color: green;
     margin: 15px;
     width: 60px;
     height: 60px;
     display: inline-block;
+    border-radius: 10px;
  }
 
 .missedPiece {
@@ -86,6 +89,7 @@ body {
     width: 60px;
     height: 60px;
     display: inline-block;
+    border-radius: 10px;
 }
 
 .pieceButton:hover {
@@ -94,13 +98,14 @@ body {
     width: 60px;
     height: 60px;
     display: inline-block;
+    border-radius: 10px;
 }
 
 .disable {
     pointer-events: none;
 }
 
-#boxbuttons {
+#menuButtons {
     text-align: center;
     margin: 20px;
     display: inline-block;

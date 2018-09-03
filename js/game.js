@@ -13,7 +13,7 @@ var game = (function () {
                 currentNumberOfPieces = initialNumberOfPieces;
                 initialNumberOfAllowedMistakes;
                 allowedMistakes = 0;
-                numberOfMistakes = 0;
+                numberOfMistakes = allowedMistakes;
                 pieces = initializePieces();
             },
 
@@ -30,7 +30,7 @@ var game = (function () {
             },
 
             getNumberOfMistakes = function () {
-                return numberOfMistakes;
+                return allowedMistakes;
             },
 
             getAccuracy = function () {
@@ -79,16 +79,23 @@ var game = (function () {
                     }
                 }
                 while (i < Math.floor((pieces.length / 2) - 1));
+                allowedMistakes = Math.floor(((pieces.length / 2) - 1) / 3);
+                numberOfMistakes = allowedMistakes;
                 return pieces;
             },
 
             playerGuess = function (pieceGuessByPlayerId) {
-                if(pieces[pieceGuessByPlayerId].isGuess){
+                if (pieceGuessByPlayerId < 0 || pieceGuessByPlayerId > pieces.length) {
                     numberOfMoves = numberOfMoves + 1;
-                    numberOfMistakes = numberOfMistakes + 1;
-                    if (numberOfMistakes > allowedMistakes) {
+                    numberOfMistakes = numberOfMistakes - 1;
+                    return "GAME OVER";
+                }
+                if (pieces[pieceGuessByPlayerId].isGuess) {
+                    if (numberOfMistakes <= allowedMistakes) {
                         return "GAME OVER";
                     }
+                    numberOfMoves = numberOfMoves + 1;
+                    numberOfMistakes = numberOfMistakes - 1;
                 }
                 if (checkGuess(pieceGuessByPlayerId)) {
                     if (!anyGuessAvailable()) {
@@ -101,11 +108,11 @@ var game = (function () {
                     return "CORRECT";
                 }
                 else {
-                    numberOfMoves = numberOfMoves + 1;
-                    numberOfMistakes = numberOfMistakes + 1;
-                    if (numberOfMistakes > allowedMistakes) {
+                    if (numberOfMistakes <= allowedMistakes) {
                         return "GAME OVER";
                     }
+                    numberOfMoves = numberOfMoves + 1;
+                    numberOfMistakes = numberOfMistakes - 1;
                 }
             },
             anyGuessAvailable = function () {
@@ -120,10 +127,7 @@ var game = (function () {
             },
             checkGuess = function (pieceGuessByPlayerId) {
                 var i,
-                    isGuess = false
-                if (pieceGuessByPlayerId < 0 || pieceGuessByPlayerId > pieces.length) {
                     isGuess = false;
-                }
                 for (i = 0; i < pieces.length; i++) {
                     if (pieces[i].id === pieceGuessByPlayerId && pieces[i].toGuess) {
                         pieces[i].isGuess = true;

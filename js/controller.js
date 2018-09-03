@@ -42,11 +42,11 @@ var controller = function () {
 
             if (resultOfGuess === "GAME OVER") {
                 lockPieces();
-                setTimeout(startGame, 3000);
+                setTimeout(startGame, 2000);
 
             } else if (resultOfGuess === "NEXT LEVEL") {
                 lockPieces();
-                setTimeout(moveToNextLevel, 3000);
+                setTimeout(moveToNextLevel, 2000);
             }
         };
 
