@@ -65,6 +65,8 @@ var view = (function () {
                 div.setAttribute("class", "hitedPiece");
             } else if (resultOfGuess === "GAME OVER") {
                 div.setAttribute("class", "missedPiece");
+            } else if (resultOfGuess === "MISSED") {
+                div.setAttribute("class", "missedPiece");
             }
 
         },

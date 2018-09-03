@@ -21,6 +21,7 @@ var game = (function () {
                 currentNumberOfPieces++;
                 numberOfMistakes;
                 numberOfMoves;
+                allowedMistakes;
                 pieces = initializePieces();
                 initialNumberOfAllowedMistakes;
             },
@@ -80,27 +81,31 @@ var game = (function () {
                 }
                 while (i < Math.floor((pieces.length / 2) - 1));
                 allowedMistakes = Math.floor(((pieces.length / 2) - 1) / 3);
-                numberOfMistakes = allowedMistakes;
                 return pieces;
             },
 
             playerGuess = function (pieceGuessByPlayerId) {
                 if (pieceGuessByPlayerId < 0 || pieceGuessByPlayerId > pieces.length) {
                     numberOfMoves = numberOfMoves + 1;
-                    numberOfMistakes = numberOfMistakes - 1;
+                    numberOfMistakes = numberOfMistakes + 1;
                     return "GAME OVER";
                 }
                 if (pieces[pieceGuessByPlayerId].isGuess) {
-                    if (numberOfMistakes <= allowedMistakes) {
+                    if (numberOfMistakes >= allowedMistakes) {
+                        numberOfMistakes = 0;
                         return "GAME OVER";
+                    } else {
+                        numberOfMoves = numberOfMoves + 1;
+                        numberOfMistakes = numberOfMistakes + 1;
+                        return "MISSED";
                     }
-                    numberOfMoves = numberOfMoves + 1;
-                    numberOfMistakes = numberOfMistakes - 1;
+
                 }
                 if (checkGuess(pieceGuessByPlayerId)) {
                     if (!anyGuessAvailable()) {
                         numberOfShots = numberOfShots + 1;
                         numberOfMoves = numberOfMoves + 1;
+                        numberOfMistakes = 0;
                         return "NEXT LEVEL";
                     }
                     numberOfShots = numberOfShots + 1;
@@ -108,11 +113,14 @@ var game = (function () {
                     return "CORRECT";
                 }
                 else {
-                    if (numberOfMistakes <= allowedMistakes) {
+                    if (numberOfMistakes >= allowedMistakes) {
+                        numberOfMistakes = 0;
                         return "GAME OVER";
+                    } else {
+                        numberOfMoves = numberOfMoves + 1;
+                        numberOfMistakes = numberOfMistakes + 1;
+                        return "MISSED";
                     }
-                    numberOfMoves = numberOfMoves + 1;
-                    numberOfMistakes = numberOfMistakes - 1;
                 }
             },
             anyGuessAvailable = function () {
