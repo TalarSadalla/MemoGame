@@ -40,6 +40,7 @@ var view = (function () {
                 div = document.getElementById('gameBoardDiv').children;
                 for (i = 0; i < div.length; i++) {
                     div[i].setAttribute("class", "pieceButton");
+
                 }
             }, defaultHighlightTime * 1000);
             unlockButtons();

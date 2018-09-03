@@ -41,14 +41,14 @@ var controller = function () {
             view.changeState(id, resultOfGuess);
 
             if (resultOfGuess === "GAME OVER") {
-                lockPieces;
+                lockPieces();
                 setTimeout(startGame, 2000);
 
             } else if (resultOfGuess === "NEXT LEVEL") {
-                lockPieces;
+                lockPieces();
                 setTimeout(moveToNextLevel, 2000);
             } else if (resultOfGuess === "MISSED") {
-                lockPieces;
+                lockPieces();
                 setTimeout(unlockPieces, 1000);
             }
         };
